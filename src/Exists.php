@@ -3,7 +3,6 @@
 namespace Illuminatech\ModelRules;
 
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Facades\Lang;
 
 /**
  * Exists
@@ -42,7 +41,7 @@ class Exists implements Rule
      */
     public function message()
     {
-        return $this->getMessage();
+        return $this->parseMessage($this->getMessage());
     }
 
     /**
@@ -50,6 +49,6 @@ class Exists implements Rule
      */
     protected function defaultMessage(): string
     {
-        return Lang::get('validation.exists');
+        return 'validation.exists';
     }
 }

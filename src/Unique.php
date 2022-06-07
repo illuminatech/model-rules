@@ -3,7 +3,6 @@
 namespace Illuminatech\ModelRules;
 
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Facades\Lang;
 
 /**
  * Unique
@@ -60,7 +59,7 @@ class Unique implements Rule
      */
     public function message()
     {
-        return $this->getMessage();
+        return $this->parseMessage($this->getMessage());
     }
 
     /**
@@ -68,7 +67,7 @@ class Unique implements Rule
      */
     protected function defaultMessage(): string
     {
-        return Lang::get('validation.exists');
+        return 'validation.unique';
     }
 
     /**

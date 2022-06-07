@@ -103,4 +103,19 @@ class UniqueTest extends TestCase
         $this->assertTrue($rule->passes('item_id', $validId));
         $this->assertFalse($rule->passes('item_id', $invalidId));
     }
+
+    /**
+     * @depends testFailValidation
+     */
+    public function testCustomMessage()
+    {
+        $rule = new Unique(Category::class);
+        $rule->withMessage('custom message :model_id');
+
+        $existingId = Category::query()->max('id');
+
+        $this->assertFalse($rule->passes('category_id', $existingId));
+
+        $this->assertSame('custom message ' . $existingId, $rule->message());
+    }
 }

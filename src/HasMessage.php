@@ -3,7 +3,7 @@
 namespace Illuminatech\ModelRules;
 
 /**
- * HasMessage
+ * HasMessage manages setup of custom validation error message for the validation rule.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
@@ -11,10 +11,16 @@ namespace Illuminatech\ModelRules;
 trait HasMessage
 {
     /**
-     * @var string|null
+     * @var string|null error message to be used on validation failure.
      */
     private $message;
 
+    /**
+     * Sets the error message to be used on validation failure.
+     *
+     * @param string|null $message validation error message.
+     * @return static self reference.
+     */
     public function setMessage(?string $message): self
     {
         $this->message = $message;
@@ -22,6 +28,11 @@ trait HasMessage
         return $this;
     }
 
+    /**
+     * Returns the error message to be used on validation failure.
+     *
+     * @return string validation error message.
+     */
     public function getMessage()
     {
         if ($this->message === null) {
@@ -29,6 +40,17 @@ trait HasMessage
         }
 
         return $this->message;
+    }
+
+    /**
+     * Alias of {@see setMessage()}
+     *
+     * @param string|null $message validation error message.
+     * @return static self reference.
+     */
+    public function withMessage(?string $message): self
+    {
+        return $this->setMessage($message);
     }
 
     /**

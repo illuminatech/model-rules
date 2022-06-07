@@ -85,4 +85,19 @@ class ExistsTest extends TestCase
         $this->assertTrue($rule->passes('item_id', $validId));
         $this->assertFalse($rule->passes('item_id', $invalidId));
     }
+
+    /**
+     * @depends testFailValidation
+     */
+    public function testCustomMessage()
+    {
+        $rule = new Exists(Category::class);
+        $rule->withMessage('custom message');
+
+        $validId = Category::query()->max('id');
+
+        $this->assertFalse($rule->passes('category_id', $validId * 2));
+
+        $this->assertSame('custom message', $rule->message());
+    }
 }

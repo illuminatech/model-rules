@@ -3,7 +3,8 @@
 namespace Illuminatech\ModelRules;
 
 /**
- * HasQuery
+ * HasQuery manages setup of model search query for the validation rule.
+ * Since it is the core feature, this trait handles validation rule instantiation as well.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
@@ -37,6 +38,18 @@ trait HasQuery
         }
 
         $this->attribute = $attribute;
+    }
+
+    /**
+     * Creates new validation rule instance.
+     * @see __construct()
+     *
+     * @param mixed ...$args constructor arguments.
+     * @return static new validation rule instance.
+     */
+    public static function new(...$args): self
+    {
+        return new static(...$args);
     }
 
     /**
