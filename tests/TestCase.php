@@ -4,9 +4,12 @@ namespace Illuminatech\ModelRules\Test;
 
 use Illuminate\Container\Container;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Capsule\Manager;
+use Illuminate\Translation\FileLoader;
+use Illuminate\Translation\Translator;
 
 /**
  * Base class for the test cases.
@@ -26,6 +29,22 @@ class TestCase extends \PHPUnit\Framework\TestCase
         parent::setUp();
 
         $this->createApplication();
+
+        $this->app->singleton('files', function () {
+            return new Filesystem;
+        });
+
+        $this->app->singleton('translation.loader', function (Container $app) {
+            return new FileLoader($app->make('files'), __DIR__);
+        });
+
+        $this->app->singleton('translator', function (Container $app) {
+            $loader = $app->make('translation.loader');
+
+            $trans = new Translator($loader, 'en');
+
+            return $trans;
+        });
 
         $db = new Manager;
 

@@ -3,6 +3,7 @@
 namespace Illuminatech\ModelRules;
 
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Lang;
 
 /**
  * Exists
@@ -12,39 +13,9 @@ use Illuminate\Contracts\Validation\Rule;
  */
 class Exists implements Rule
 {
-    /**
-     * @var \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|object data source.
-     */
-    protected $query;
-
-    /**
-     * @var string|null name of the attribute (column) to compare validation value against.
-     */
-    protected $attribute;
-
-    /**
-     * @var \Illuminate\Database\Eloquent\Model|object|null last queried model.
-     */
-    protected $model;
-
-    /**
-     * Constructor.
-     *
-     * @param \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|object|string $source data source.
-     * @param string|null $attribute name of the attribute (column) to compare validation value against, if not set - model key will be used.
-     */
-    public function __construct($source, ?string $attribute = null)
-    {
-        if (is_object($source)) {
-            $this->query = $source;
-        } elseif (is_string($source)) {
-            $this->query = $source::query();
-        } else {
-            throw new \InvalidArgumentException('Unsupported source type: ' . gettype($source));
-        }
-
-        $this->attribute = $attribute;
-    }
+    use HasQuery;
+    use HasMessage;
+    use HasModel;
 
     /**
      * {@inheritdoc}
@@ -53,7 +24,7 @@ class Exists implements Rule
     {
         $this->model = null;
 
-        $query = clone $this->query;
+        $query = $this->newQuery();
 
         if ($this->attribute === null) {
             $query->whereKey($value);
@@ -71,11 +42,14 @@ class Exists implements Rule
      */
     public function message()
     {
-        return __('validation.exists');
+        return $this->getMessage();
     }
 
-    public function getModel(): ?object
+    /**
+     * {@inheritdoc}
+     */
+    protected function defaultMessage(): string
     {
-        return $this->model;
+        return Lang::get('validation.exists');
     }
 }
