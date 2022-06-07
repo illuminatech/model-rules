@@ -7,38 +7,54 @@
 
 namespace Illuminatech\ModelRules;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Collection;
 
 /**
- * Exists
+ * MultiExist
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
  */
-class Exists implements Rule
+class MultiExist implements Rule
 {
     use HasQuery;
     use HasMessage;
-    use HasModel;
+    use HasModels;
 
     /**
      * {@inheritdoc}
      */
-    public function passes($attribute, $value): bool
+    public function passes($attribute, $value)
     {
-        $this->model = null;
+        $this->models = new Collection();
+
+        if ($value instanceof Arrayable) {
+            $value = $value->toArray();
+        }
+
+        if ($value instanceof \Traversable) {
+            $value = iterator_to_array($value);
+        }
+
+        if (!is_array($value)) {
+            return false;
+        }
+
+        $value = array_unique($value);
 
         $query = $this->newQuery();
 
         if ($this->attribute === null) {
             $query->whereKey($value);
         } else {
-            $query->where($this->attribute, $value);
+            $query->whereIn($this->attribute, $value);
         }
 
-        $this->model = $query->first();
+        $this->models = $query->get();
 
-        return $this->model !== null;
+        return $this->models->count() === count($value);
     }
 
     /**
@@ -46,7 +62,7 @@ class Exists implements Rule
      */
     public function message()
     {
-        return $this->parseMessage($this->getMessage());
+        return $this->getMessage();
     }
 
     /**
