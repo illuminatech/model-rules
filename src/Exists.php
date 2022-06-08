@@ -8,7 +8,19 @@
 namespace Illuminatech\ModelRules;
 
 /**
- * Exists
+ * Exists checks if requested model exists or not.
+ *
+ * For example:
+ *
+ * ```
+ * $request->validate([
+ *     'category_id' => [
+ *         'required',
+ *         'integer',
+ *         Exists::new(Category::class),
+ *     ],
+ * ]);
+ * ```
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0

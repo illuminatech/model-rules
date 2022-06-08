@@ -11,7 +11,18 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 
 /**
- * MultiUnique
+ * MultiUnique checks if requested models specified as attribute values array are unique or not.
+ *
+ * For example:
+ *
+ * ```
+ * $request->validate([
+ *     'tags' => [
+ *         'array',
+ *         MultiUnique::new(Tag::class, 'name'),
+ *     ],
+ * ]);
+ * ```
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0

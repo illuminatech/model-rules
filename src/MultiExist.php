@@ -11,7 +11,18 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 
 /**
- * MultiExist
+ * MultiExist checks if requested models specified as attribute values array exist or not.
+ *
+ * For example:
+ *
+ * ```
+ * $request->validate([
+ *     'category_ids' => [
+ *         'array',
+ *         MultiExist::new(Category::class),
+ *     ],
+ * ]);
+ * ```
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0

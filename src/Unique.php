@@ -8,7 +8,21 @@
 namespace Illuminatech\ModelRules;
 
 /**
- * Unique
+ * Unique checks if requested model is unique.
+ *
+ * For example:
+ *
+ * ```
+ * $request->validate([
+ *     'email' => [
+ *         'required',
+ *         'string',
+ *         'email',
+ *         Unique::new(User::class, 'email')
+ *             ->ignore($request->user()),
+ *     ],
+ * ]);
+ * ```
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
