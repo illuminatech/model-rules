@@ -7,18 +7,14 @@
 
 namespace Illuminatech\ModelRules;
 
-use Illuminate\Contracts\Validation\Rule;
-
 /**
  * Exists
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
  */
-class Exists implements Rule
+class Exists extends AbstractRule
 {
-    use HasQuery;
-    use HasMessage;
     use HasModel;
 
     /**

@@ -7,24 +7,36 @@
 
 namespace Illuminatech\ModelRules;
 
+use Illuminate\Contracts\Validation\Rule;
+
 /**
- * HasQuery manages setup of model search query for the validation rule.
- * Since it is the core feature, this trait handles validation rule instantiation as well.
+ * AbstractRule is a base model rule class.
+ *
+ * It defines core features:
+ *
+ *  - setup of model search query for the validation rule;
+ *  - handle validation rule instantiation;
+ *  - manage setup of custom validation error message for the validation rule;
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
  */
-trait HasQuery
+abstract class AbstractRule implements Rule
 {
     /**
      * @var \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|object data source.
      */
-    protected $query;
+    private $query;
 
     /**
      * @var string|null name of the attribute (column) to compare validation value against.
      */
     protected $attribute;
+
+    /**
+     * @var string|null error message to be used on validation failure.
+     */
+    private $message;
 
     /**
      * Constructor.
@@ -65,5 +77,58 @@ trait HasQuery
     protected function newQuery(): object
     {
         return clone $this->query;
+    }
+
+    /**
+     * Sets the error message to be used on validation failure.
+     *
+     * @param string|null $message validation error message.
+     * @return static self reference.
+     */
+    public function setMessage(?string $message): self
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * Returns the error message to be used on validation failure.
+     *
+     * @return string validation error message.
+     */
+    public function getMessage()
+    {
+        if ($this->message === null) {
+            $this->message = $this->defaultMessage();
+        }
+
+        return $this->message;
+    }
+
+    /**
+     * Alias of {@see setMessage()}
+     *
+     * @param string|null $message validation error message.
+     * @return static self reference.
+     */
+    public function withMessage(?string $message): self
+    {
+        return $this->setMessage($message);
+    }
+
+    /**
+     * Defines the default validation error message.
+     *
+     * @return string default error message.
+     */
+    abstract protected function defaultMessage(): string;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function message()
+    {
+        return $this->getMessage();
     }
 }

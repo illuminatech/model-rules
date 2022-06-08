@@ -8,7 +8,6 @@
 namespace Illuminatech\ModelRules;
 
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Collection;
 
 /**
@@ -17,10 +16,8 @@ use Illuminate\Support\Collection;
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
  */
-class MultiExist implements Rule
+class MultiExist extends AbstractRule
 {
-    use HasQuery;
-    use HasMessage;
     use HasModels;
 
     /**

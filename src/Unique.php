@@ -7,18 +7,14 @@
 
 namespace Illuminatech\ModelRules;
 
-use Illuminate\Contracts\Validation\Rule;
-
 /**
  * Unique
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
  */
-class Unique implements Rule
+class Unique extends AbstractRule
 {
-    use HasQuery;
-    use HasMessage;
     use HasModel;
 
     /**
