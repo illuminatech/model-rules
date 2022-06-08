@@ -61,8 +61,8 @@ class MultiExistTest extends TestCase
 
         $validName = Category::query()->firstOrFail()->name;
 
-        $this->assertTrue($rule->passes('category_name', [$validName]));
-        $this->assertFalse($rule->passes('category_name', ['unexisting-category-name']));
+        $this->assertTrue($rule->passes('category_names', [$validName]));
+        $this->assertFalse($rule->passes('category_names', ['unexisting-category-name']));
     }
 
     /**
@@ -84,7 +84,7 @@ class MultiExistTest extends TestCase
 
         $rule = new MultiExist($category->items());
 
-        $this->assertTrue($rule->passes('item_id', [$validId]));
-        $this->assertFalse($rule->passes('item_id', [$invalidId]));
+        $this->assertTrue($rule->passes('item_ids', [$validId]));
+        $this->assertFalse($rule->passes('item_ids', [$invalidId]));
     }
 }
