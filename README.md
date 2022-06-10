@@ -41,13 +41,13 @@ Usage
 This extension provides set of the validation rules to check if a model exists or is unique for Laravel.
 It serves 2 main purposes:
 
-- define a fluent interface for Eloquent model exist/unique validation
+- define a fluent interface for Eloquent model exist/unique validation,
 - remove redundant database queries for Eloquent model manipulations.
 
 Assume we have a database storing some items grouped by categories. While creating an HTTP request handler for the new
 item saving, we need to check if given category record exists and associate it the new item. There is a well-known
 recommendation to use relation methods like `associate()` to handle relation instantiation at object level. However,
-if we follow it along with standard validation our program performs redundant SQL query. For example:
+if we follow it along with standard validation, our program performs redundant SQL query. For example:
 
 ```php
 <?php
@@ -208,7 +208,7 @@ class RefundRequestController extends Controller
 }
 ```
 
-> Note: this extension does not put explicit restriction on the data source object type - it simply expected to match
+> Note: this extension does not put explicit restriction on the query builder object type - it simply expected to match
   database query builder notation. Thus, you may create a custom query builder class, which works with special data storage
   like MongoDB or Redis, and pass its instance as a data source. If its methods signature matches `\Illuminate\Database\Query\Builder` -
   it should work. Although it is not guaranteed.
