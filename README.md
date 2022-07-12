@@ -351,7 +351,6 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Item;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminatech\ModelRules\Exists;
 
 class ItemController extends Controller
@@ -367,11 +366,8 @@ class ItemController extends Controller
         $items = [];
         $categoryRule = Exists::new(Category::class);
         foreach ($firstRoundValidated['items'] as $key => $item) {
-            $itemData = [];
-            Arr::set($itemData, 'items.' . $key, $item); // ensure error message for the correct nested field
-            
-            $this->validate($itemData, [
-                'items.*.category_id' => $categoryRule, // validate single item at once
+            $this->validate($request, [
+                "items.{$key}.category_id" => $categoryRule, // validate single item at once
             ]);
             
             // create item draft:
