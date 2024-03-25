@@ -1,6 +1,12 @@
 Laravel Model Validation Rules
 ==============================
 
+1.0.2 Under Development
+-----------------------
+
+- Enh: Added support for "illuminate/validation" 11.0 (klimov-paul)
+
+
 1.0.1, February 27, 2023
 ------------------------
 
